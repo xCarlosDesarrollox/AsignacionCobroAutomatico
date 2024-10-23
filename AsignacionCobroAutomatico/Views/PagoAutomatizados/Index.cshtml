@@ -1,0 +1,31 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model IEnumerable<PagoAutomatizadoViewModel>
+@{
+    ViewData["Title"] = "Asignar Servicio";
+}
+
+<h1>Servicios del Cliente</h1>
+
+<h4>Nombre del cliente: @ViewBag.NombreCliente Tipo de notificación: @ViewBag.Notificacion</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Servicio</th>
+                <th>Número Referencia</th>
+                <th>Monto</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pago in Model)
+            {
+                <tr>
+                    <td>@pago.NombreServicio</td>
+                    <td>@pago.NumeroReferencia</td>
+                    <td>@pago.Monto</td>
+                </tr>       
+            }
+        </tbody>
+    </table>
+

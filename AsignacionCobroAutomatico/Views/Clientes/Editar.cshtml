@@ -1,0 +1,45 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model ClienteViewModel
+@{
+    ViewData["Title"] = "Editar Cliente";
+}
+<h1>Crear cliente</h1>
+
+<form asp-action="Editar">
+    <div asp-validation-summary="ModelOnly"></div>
+
+    <div class="mb-3">
+        <label asp-for="Nombre" class="form-label"></label>
+        <input asp-for="Nombre" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Apellido" class="form-label"></label>
+        <input asp-for="Apellido" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Dpi" class="form-label"></label>
+        <input asp-for="Dpi" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Direccion" class="form-label"></label>
+        <input asp-for="Direccion" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Telefono" class="form-label"></label>
+        <input asp-for="Telefono" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="TipoNotificacionId" class="form-label"></label>
+        <select asp-for="TipoNotificacionId" asp-items="Model.notificacion" class="form-select"></select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Actualizar</button>
+    <a class="btn btn-success" asp-action="Index">Cancelar</a>
+    <a class="btn btn-danger" asp-action="Borrar" asp-route-id="@Model.Id">Eliminar</a>
+</form>

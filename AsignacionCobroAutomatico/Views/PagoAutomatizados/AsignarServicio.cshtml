@@ -1,0 +1,87 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model PagoAutomatizadoPrimeraVezViewModel
+@{
+    ViewData["Title"] = "Asignar Servicio";
+}
+
+
+
+<form asp-action="Asignar">
+    <div class="container d-flex justify-content-center align-items-center ">
+        <div class="card p-4 shadow-lg" style="width: 30rem;">
+            <h1 class="mb-3">Cliente: @Model.cliente.Nombre</h1>
+            <h3>Registrar tarjeta</h3>
+            <div class="mb-2">
+                <label asp-for="tarjeta.NumeroTarjeta" class="form-label">Numero de tarjeta</label>
+                <input asp-for="tarjeta.NumeroTarjeta" class="form-control" id="numeroTarjeta" oninput="validarTarjeta()" />
+            </div>
+            <div class="mb-2">
+                <label asp-for="EmpresaNombre" class="form-label">Empresa emisora</label>
+                <input asp-for="EmpresaNombre" class="form-control" id="empresaEmisora" readonly />
+            </div>
+            <div class="mb-2">
+                <label asp-for="tarjeta.PinSeguridad" class="form-label">Pin de seguridad</label>
+                <input asp-for="tarjeta.PinSeguridad" class="form-control" />
+            </div><div class="mb-3">
+                <label asp-for="tarjeta.FechaExpiracion" class="form-label">Fecha de vencimiento</label>
+                <input asp-for="tarjeta.FechaExpiracion" class="form-control" />
+            </div>
+            <div class="mb-2">
+                <label asp-for="tarjeta.TipoTarjetaId" class="form-label"></label>
+                <select asp-for="tarjeta.TipoTarjetaId" asp-items="Model.TipoTarjeta" class="form-select"></select>
+            </div>
+            <h3 class="mb-3">Seleccionar servicio</h3>
+            <div class="mb-3">
+                <input type="hidden" asp-for="@Model.cliente.Dpi" />
+                @foreach (var servicio in Model.ServicioFijo)
+                {
+                    <div>
+                        <input class="form-check-input" type="checkbox" name="ServiciosSeleccionados" value="@servicio.Value" id="servicio_@servicio.Value" />
+                        <label class="form-check-label" for="servicio_@servicio.Value">@servicio.Text</label>
+                    </div>
+                }
+            </div>
+            <button type="submit" class="btn btn-primary">Registrar</button>
+        </div>
+
+
+    </div>
+</form>
+
+@section scripts
+{
+    <script>
+        function validarTarjeta()
+        {
+            var numTarjeta = document.getElementById("numeroTarjeta").value;
+            var empEmisora = document.getElementById("empresaEmisora");
+
+            var amexRex = /^3[47][0-9]{0,13}$/;
+            var visaRex = /^4[0-9]{0,15}$/;
+            var masterRex = /^5[15][0-9]{0,13}$/;
+            var discoveRex = /^(6011|644|65)[0-9]{0,12}$/;
+
+
+            if (amexRex.test(numTarjeta)) {
+                empEmisora.value = "AMEX";
+            } else if (visaRex.test(numTarjeta)) {
+                empEmisora.value = "VISA";
+            } else if (masterRex.test(numTarjeta)) {
+                empEmisora.value = "Master Card";
+            } else if (discoveRex.test(numTarjeta)) {
+                empEmisora.value = "Discover";
+            }else
+            {
+                empEmisora.value = "Tarjeta invalida";
+            }
+        }
+    </script>
+}
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
