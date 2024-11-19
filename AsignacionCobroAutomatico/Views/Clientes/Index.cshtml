@@ -17,6 +17,8 @@
             <th>DPI</th>
             <th>Servicio</th>
             <th></th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -26,8 +28,9 @@
                 <td>@cliente.Nombre @cliente.Apellido</td>
                 <td>@cliente.Dpi</td>
                 <td>@cliente.Descripcion</td>
-                <td><a asp-action="Editar" asp-route-id="@cliente.Id" class="btn btn-secondary">Editar</a></td>
-                <td><a asp-controller="PagoAutomatizados" asp-action="Asignar" asp-route-Dpi="@cliente.Dpi" class="btn btn-primary">Asignar servicio</a></td>
+                <td><a asp-controller="PagoAutomatizados" asp-action="Asignar" asp-route-Dpi="@cliente.Dpi" class="btn btn-outline-primary">Asignar servicio</a></td>
+                <td><a asp-action="Editar" asp-route-id="@cliente.Id" class="btn btn-outline-dark">Editar cliente</a></td>
+                <td><a asp-controller="PagoAutomatizados" asp-action="Index" asp-route-id="@cliente.Id" class="btn btn-outline-secondary">Ver servicio</a></td>
             </tr>
         }
     </tbody>

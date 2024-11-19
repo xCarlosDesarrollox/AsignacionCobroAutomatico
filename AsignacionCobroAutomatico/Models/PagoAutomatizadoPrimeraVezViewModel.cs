@@ -12,5 +12,6 @@ namespace AsignacionCobroAutomatico.Models
         public IEnumerable<SelectListItem> ServicioFijo { get; set; }
         [Display(Name = "AgregarServicio")]
         public List<int> ServiciosSeleccionados { get; set; }
+        public bool serviciosCliente { get; set; }
     }
 }

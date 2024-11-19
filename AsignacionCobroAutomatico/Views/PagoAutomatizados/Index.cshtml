@@ -3,12 +3,13 @@
 *@
 @model IEnumerable<PagoAutomatizadoViewModel>
 @{
-    ViewData["Title"] = "Asignar Servicio";
+    ViewData["Title"] = "Servicios";
 }
 
 <h1>Servicios del Cliente</h1>
 
-<h4>Nombre del cliente: @ViewBag.NombreCliente Tipo de notificación: @ViewBag.Notificacion</h4>
+<h4>Nombre del cliente: @ViewBag.NombreCliente Tipo de notificación: @ViewBag.Notificacion</h4> 
+<a asp-action="Editar" asp-route-id="@ViewBag.Cliente" class="btn btn-primary">Editar servicios</a>
     <table class="table">
         <thead>
             <tr>

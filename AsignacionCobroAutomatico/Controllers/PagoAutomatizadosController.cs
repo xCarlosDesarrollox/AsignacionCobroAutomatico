@@ -20,13 +20,14 @@ namespace AsignacionCobroAutomatico.Controllers
             this.repositorioPagoAutomatizado = repositorioPagoAutomatizado;
             this.repositorioTarjeta = repositorioTarjeta;
         }
-        public async Task<IActionResult> Index(int clienteId)
+        public async Task<IActionResult> Index(int Id)
         {
-            var modelo = await repositorioPagoAutomatizado.ListarDatoPorCliente(clienteId);
+            var modelo = await repositorioPagoAutomatizado.ListarDatoPorCliente(Id);
             var nombre = modelo.FirstOrDefault()?.NombreCliente;
             var notificacion = modelo.FirstOrDefault()?.NombreTipoNotificación;
             ViewBag.Notificacion = notificacion;
             ViewBag.NombreCliente = nombre;
+            ViewBag.Cliente = Id;
             return View(modelo);
         }
         [HttpGet]
@@ -78,6 +79,67 @@ namespace AsignacionCobroAutomatico.Controllers
                 await repositorioPagoAutomatizado.ActualizarNoRef(id,NumRef);
             }
             return RedirectToAction("Index", new { clienteId = cliente.Id });
+        }
+        [HttpGet]
+        public async Task<IActionResult> Editar(int Id) {
+
+            var servicioCliente = await repositorioPagoAutomatizado.ContarServicio(Id);
+            var servicios = await ObtenerServicios();
+            var tarjetaCliente = await repositorioTarjeta.ObtenerTarjeta(Id);
+            var servicioActualizado = new List<ServicioCliente>();
+            var empresaEmi = await repositorioTarjeta.ListarEmpresa();
+
+            var encontrarEmp = empresaEmi.FirstOrDefault(x => x.Id.Equals(tarjetaCliente.EmpresaEmisoraId));
+
+            Console.WriteLine($"Servicios: {string.Join(", ", servicioCliente.Select(x => x.ServicioId))}");
+
+            foreach (var servi in servicios) 
+            {
+                var coincide = false;
+                foreach (var serviCliente in servicioCliente)
+                {
+                    if (serviCliente.ServicioId == int.Parse(servi.Value))
+                    {
+                        servicioActualizado.Add(new ServicioCliente 
+                        {
+                            ServicioId = int.Parse(servi.Value),
+                            Descripcion = servi.Text,
+                            asignado = true
+                        });
+                        coincide = true;
+                        Console.WriteLine($"Otro1: ");
+                    }
+                }
+                if (!coincide) {
+                    servicioActualizado.Add(new ServicioCliente
+                    {
+                        ServicioId = int.Parse(servi.Value),
+                        Descripcion = servi.Text,
+                        asignado = false
+                    });
+                    Console.WriteLine($"Otro2: ");
+                }
+            }
+
+            PagoAutomatizadoActualizadoViewModel pago = new PagoAutomatizadoActualizadoViewModel 
+            {
+                cliente = await repositorioClientes.BuscarCliente(Id),
+                tarjeta = tarjetaCliente,
+                Empresa = encontrarEmp.Descripcion,
+                TipoTarjeta = await ObtenerTipoTarjeta(),
+                servicio = servicioActualizado
+            };
+            Console.WriteLine($"Cliente: {pago.cliente?.Nombre}");
+            Console.WriteLine($"Empresa: {pago.Empresa}");
+            Console.WriteLine($"Servicios: {string.Join(", ", pago.servicio.Select(s => s.Descripcion))}");
+
+            return View(pago);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CambioEstatus(int id, string accion, int cliente) 
+        {
+            
+            return RedirectToAction("Editar", cliente);
         }
 
         private async Task<IEnumerable<SelectListItem>> ObtenerServicios()

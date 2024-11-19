@@ -7,6 +7,7 @@ namespace AsignacionCobroAutomatico.Servicios
     public interface IRepositorioPagoAutomatizado
     {
         Task ActualizarNoRef(int id, string numRef);
+        Task<IEnumerable<ServicioCliente>> ContarServicio(int clienteId);
         Task<int> Crear(PagoAutomatizado pago);
         Task<IEnumerable<PagoAutomatizadoViewModel>> ListarDatoPorCliente(int clienteId);
     }
@@ -50,12 +51,12 @@ namespace AsignacionCobroAutomatico.Servicios
             return pago.Id = id;
         }
 
-        public async Task<int> ContarServicio(int servicioId) 
+        public async Task<IEnumerable<ServicioCliente>> ContarServicio(int clienteId) 
         {
             using var conn = new SqlConnection(connectionString);
 
-            return await conn.ExecuteScalarAsync<int>(@"SELECT COUNT(*) 
-                                        FROM PagoAutomatizado WHERE ServicioId = @ServicioId", new { servicioId});
+            return await conn.QueryAsync<ServicioCliente>(@"SELECT ServicioId
+                                        FROM PagoAutomatizado WHERE ClienteId = @clienteId", new { clienteId });
         }
 
         public async Task ActualizarNoRef(int id, string numRef) 
