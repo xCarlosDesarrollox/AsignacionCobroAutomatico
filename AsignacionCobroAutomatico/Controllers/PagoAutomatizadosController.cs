@@ -78,7 +78,7 @@ namespace AsignacionCobroAutomatico.Controllers
                 string NumRef = numero + Convert.ToString(id);
                 await repositorioPagoAutomatizado.ActualizarNoRef(id,NumRef);
             }
-            return RedirectToAction("Index", new { clienteId = cliente.Id });
+            return RedirectToAction("Index", new { Id = cliente.Id });
         }
         [HttpGet]
         public async Task<IActionResult> Editar(int Id) {
@@ -125,14 +125,8 @@ namespace AsignacionCobroAutomatico.Controllers
             {
                 cliente = await repositorioClientes.BuscarCliente(Id),
                 tarjeta = tarjetaCliente,
-                Empresa = encontrarEmp.Descripcion,
-                TipoTarjeta = await ObtenerTipoTarjeta(),
                 servicio = servicioActualizado
             };
-            Console.WriteLine($"Cliente: {pago.cliente?.Nombre}");
-            Console.WriteLine($"Empresa: {pago.Empresa}");
-            Console.WriteLine($"Servicios: {string.Join(", ", pago.servicio.Select(s => s.Descripcion))}");
-
             return View(pago);
         }
         [HttpPost]

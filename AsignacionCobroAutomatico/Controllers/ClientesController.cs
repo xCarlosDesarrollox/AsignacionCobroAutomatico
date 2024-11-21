@@ -35,9 +35,9 @@ namespace AsignacionCobroAutomatico.Controllers
             {
                 return View(cliente);
             }
-            var nuevoCliente = cliente.Dpi; 
+            var Dpi = cliente.Dpi; 
             await repositorioClientes.Crear(cliente);
-            return RedirectToAction("Index","PagoAutomatizado", new { nuevoCliente});
+            return RedirectToAction("Asignar","PagoAutomatizados", new { Dpi });
         }
         [HttpGet]
         public async Task<IActionResult> Editar(int id)

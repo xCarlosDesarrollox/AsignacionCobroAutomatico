@@ -6,9 +6,6 @@ namespace AsignacionCobroAutomatico.Models
     {
         public Cliente cliente { get; set; }
         public Tarjeta tarjeta { get; set; }
-        public string Empresa { get; set; }
         public IEnumerable<ServicioCliente> servicio { get; set; }
-        public IEnumerable<SelectListItem> TipoTarjeta { get; set; }
-
     }
 }
